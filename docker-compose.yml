@@ -1,30 +1,31 @@
 version: "3.9"
 
 services:
-  postgres:
-    image: postgres:17
-    container_name: demo-postgres
-    environment:
-      POSTGRES_DB: demo_db
-      POSTGRES_USER: demo_user
-      POSTGRES_PASSWORD: demo_pass
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  # Local PostgreSQL (commented out - using AWS RDS instead)
+  # postgres:
+  #   image: postgres:17
+  #   container_name: demo-postgres
+  #   environment:
+  #     POSTGRES_DB: demo_db
+  #     POSTGRES_USER: demo_user
+  #     POSTGRES_PASSWORD: demo_pass
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
 
   app:
     build: .
     container_name: demo-app
-    depends_on:
-      - postgres
+    # Remove depends_on since we're not using local postgres
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/demo_db
-      SPRING_DATASOURCE_USERNAME: demo_user
-      SPRING_DATASOURCE_PASSWORD: demo_pass
+      # Replace these with your AWS RDS connection details
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database-1.c3y8yq0gwvil.us-west-2.rds.amazonaws.com:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: bU.Ume*beip?9_*oLLHi7B]*.GYk
     restart: always
 
-volumes:
-  postgres_data:
+# volumes:
+#   postgres_data:
